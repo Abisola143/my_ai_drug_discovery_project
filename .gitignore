@@ -5,4 +5,3 @@
 
 # Ignore raw data files to keep your GitHub fast and clean
 data/raw/
-data/processed/matrix.csv
