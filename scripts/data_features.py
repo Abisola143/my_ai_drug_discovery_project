@@ -39,3 +39,18 @@ def calculate_net_charge(sequence, ph=7.4):
     charge -= (sequence.count('C') * 1.0 / (1.0 + 10 ** (PKA_VALUES['C'] - ph)))
     charge -= (sequence.count('Y') * 1.0 / (1.0 + 10 ** (PKA_VALUES['Y'] - ph)))
     return float(charge)
+
+def calculate_isoelectric_point(sequence):
+    "bisection optimization algorithm"
+    low_ph, high_ph = 0.0, 14.0
+    tolerance = 0.01
+
+    while (high_ph - low_ph) > tolerance:
+        mid_ph = (low_ph + high_ph) / 2.0
+        current_charge = calculate_net_charge(sequence, mid_ph)
+        if current_charge > 0:
+            low_ph = mid_ph
+        else:
+            high_ph = mid_ph
+    return float((low_ph + high_ph)/2.0)
+
