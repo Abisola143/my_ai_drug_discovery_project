@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 
+r"C:\Users\Akinyemi\PyCharmMiscProject\my_ai_drug_discovery_project\.venv\Scripts\python.exe -m pip install --upgrade pip"
+
 #Eisenberg Hydrophobicity Scale
 EISENBERG_SCALE = {
     'A': 0.62, 'R': -2.53, 'N': -0.78, 'D': -0.90,  'C': 0.29,
@@ -24,6 +26,10 @@ PKA_VALUES = {
     'D': 3.86,  'E': 4.25,  'C': 8.33, 'Y': 10.07 # Acidic groups
 
 }
+
+HELIX_ANGLE_RAD = np.radians(100.0)
+# Sliding window for the hydrophobic moment (Eisenberg's original convention).
+MOMENT_WINDOW = 11
 
 # - Calculation functions -
 def calculate_net_charge(sequence, ph=7.4):
@@ -54,3 +60,38 @@ def calculate_isoelectric_point(sequence):
             high_ph = mid_ph
     return float((low_ph + high_ph)/2.0)
 
+def calculate_mean_eisenberg(sequence):
+    if len(sequence) == 0:
+        return 0.0
+    return float(sum(EISENBERG_SCALE.get(aa, 0.0) for aa in sequence )/len(sequence))
+
+def _window_moment(residues):
+    cos_sum = sum(EISENBERG_SCALE.get(residues[i], 0.0) * np.cos(i * HELIX_ANGLE_RAD)
+                  for i in range(len(residues)))
+    sin_sum = sum(EISENBERG_SCALE.get(residues[i], 0.0) * np.sin(i * HELIX_ANGLE_RAD)
+                  for i in range(len(residues)))
+    return float(np.sqrt(cos_sum**2 + sin_sum**2))
+
+
+def calculate_hydrophobic_moment(sequence, window=MOMENT_WINDOW):
+    """
+    Max amphiphilicity across an 11-residue sliding window (alpha-helix, 100 deg delta).
+
+    NOTE ON THE FIX: the earlier version summed over the WHOLE chain and divided by
+    length. That reintroduced size bias -- the same locally amphipathic motif scored
+    ~5x lower once buried in a longer peptide, purely because of length, which defeats
+    the 10-100 aa cap used elsewhere to strip size bias. Scanning a fixed window and
+    taking the MAX reports the most amphipathic stretch independent of total length,
+    so a short peptide and the same motif inside a long one score the same.
+    """
+    n = len(sequence)
+    if n == 0:
+        return 0.0
+    if n <= window:
+        return _window_moment(sequence)
+    return max(_window_moment(sequence[i:i + window]) for i in range(n - window + 1))
+
+def calculate_mean_bulkiness(sequence):
+    if len(sequence) == 0:
+        return 0.0
+    return float(sum(BULKINESS_SCALE.get(aa, 0.0) for aa in sequence)/len(sequence))
