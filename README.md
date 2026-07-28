@@ -1,13 +1,13 @@
 # An In Silico Workflow Utilizing a Markov Chain String Generator and a Downstream Random Forest Classifier for Peptide Sequence Design and Evaluation
 
-An advanced computational biology and machine learning framework designed to accelerate antibiotic discovery by systematically generating and screening novel Antimicrobial Peptides (AMPs) in silico. This project forms the core portfolio for a **CREST Gold Award** entry and **The Big Bang Competition** submission.
+An advanced computational biology and machine learning framework designed to accelerate antibiotic discovery by  generating and screening new Antimicrobial Peptides (AMPs) in silico. This project forms the core portfolio for a **CREST Gold Award** entry.
 
 ---
 
 ##  Project Overview & Master Blueprint
-Traditional wet-lab discovery of antimicrobial therapeutics is resource-intensive and time-consuming. This pipeline automates candidate evaluation using a two-stage computer architecture:
-1. **Generative Stage**: A stochastic Markov Chain string generator trained on canonical active sequences constructs completely novel sequence permutations.
-2. **Evaluative Stage**: A downstream Random Forest Classifier screens candidates by processing their calculated physicochemical characteristics to predict high-probability antimicrobial potency.
+Traditional wet-lab discovery of antimicrobial therapeutics is resource-intensive and time-consuming. This strategy automates evaluation using a two-stage computer scheme:
+1. **Generative Stage**: A stochastic Markov Chain string generator trained on active sequences constructs completely novel sequence permutations.
+2. **Evaluative Stage**: A downstream Random Forest Classifier screens candidates by processing their calculated physicochemical characteristics to predict high-probability antimicrobial strength.
 
 ---
 
@@ -19,8 +19,8 @@ To prevent training bias and data leakage, the data pipeline enforces strict eng
 *   **Data Layout Columns**:
     *   `Sequence_ID`: Unique trackable origin signature identifier tag.
     *   `Sequence`: Pure, uppercase canonical 20-amino-acid text character strings.
-    *   `Sequence_Length`: Extracted count of residue coordinates.
-    *   `Label`: Binary machine learning target flag (`1` for AMP, `0` for Non-AMP).
+    *   `Sequence_Length`: Extracted count of residues.
+    *   `Label`: `1` for AMP, `0` for Non-AMP.
 
 ---
 
@@ -29,8 +29,10 @@ Raw letter sequences are mathematically converted into floating-point tensors ac
 
 1. **Net Electrical Charge**: Evaluated using the net distribution formula: 
    $$\text{Net Charge} = (K + R + H) - (D + E)$$
-2. **Mean Hydrophobicity Index**: Every peptide residue string is mapped sequentially against the universal **Eisenberg Hydrophobicity Scale** to compute its mean global score, unlocking the linear vector tracking for downstream classification models.
-
+2. **Isoelectric Point**: Calculated using bisection optimisation algorithm to find the pH at which each sequence is neutral
+3. **Mean Eisenberg**: Overall Hydrophobicity of the sequence
+4. **Hydrophobic Moment**: Using the formula for window moment and assuming 100 degrees for an alpha helix folding of the sequence
+5. **Mean Bulkiness**: Overall size of each of the side chains, to calculate for steric hindrance
 ---
 
 ##  Academic Goals
