@@ -34,7 +34,7 @@ MOMENT_WINDOW = 11
 # - Calculation functions -
 def calculate_net_charge(sequence, ph=7.4):
     charge = 1.0/(1.0+10**(ph-PKA_VALUES['N_term']))
-    charge -= 1.0/(1.0+10**(ph-PKA_VALUES['C_term']))
+    charge -= 1.0/(1.0+10**(PKA_VALUES['C_term']- ph))
     #side chains
     charge += (sequence.count('K') * 1.0/ (1.0 + 10** (ph-PKA_VALUES['K'])))
     charge += (sequence.count('R') * 1.0 / (1.0 + 10 ** (ph - PKA_VALUES['R'])))
