@@ -33,8 +33,8 @@ MOMENT_WINDOW = 11
 
 # - Calculation functions -
 def calculate_net_charge(sequence, ph=7.4):
-    charge = 1.0/(1.0+10**(ph-PKA_VALUES['N-term']))
-    charge -= 1.0/(1.0+10**(ph-PKA_VALUES['C-term']))
+    charge = 1.0/(1.0+10**(ph-PKA_VALUES['N_term']))
+    charge -= 1.0/(1.0+10**(ph-PKA_VALUES['C_term']))
     #side chains
     charge += (sequence.count('K') * 1.0/ (1.0 + 10** (ph-PKA_VALUES['K'])))
     charge += (sequence.count('R') * 1.0 / (1.0 + 10 ** (ph - PKA_VALUES['R'])))
@@ -95,3 +95,33 @@ def calculate_mean_bulkiness(sequence):
     if len(sequence) == 0:
         return 0.0
     return float(sum(BULKINESS_SCALE.get(aa, 0.0) for aa in sequence)/len(sequence))
+
+# adding to my already created table and linking my paths
+def main():
+    input_path = r"C:\Users\Akinyemi\PyCharmMiscProject\my_ai_drug_discovery_project\data\processed\matrix.csv"
+    output_path = r"C:\Users\Akinyemi\PyCharmMiscProject\my_ai_drug_discovery_project\data\processed\matrix_featured.csv"
+
+    print(f"Opening csv fable from: {input_path}")
+    df = pd.read_csv(input_path)
+
+    #Check sequence lengths again
+    df['Sequence_Length'] = df['Sequence'].str.len()
+    df = df[df['Sequence_Length'] >= 10 & (df['Sequence_Length'] <= 100)]
+
+    print("Extracting the parameter matrix...")
+    df['Net_Charge']= df['Sequence'].apply(lambda s: calculate_net_charge(s, ph = 7.4))
+    df['Isoelectric_Point'] = df['Sequence'].apply(calculate_isoelectric_point)
+    df['Mean_Eisenberg'] = df['Sequence'].apply(calculate_mean_eisenberg)
+    df['Hydrophobic_Moment'] = df['Sequence'].apply(calculate_hydrophobic_moment)
+    df['Mean_Bulkiness'] = df['Sequence'].apply(calculate_mean_bulkiness)
+
+    #Shuffles the table to mix AMP and Non-AMP rows
+    print("Scrambling dataset via repeatable seed state (42)...")
+    df_shuffled = df.sample(frac=1, random_state=42).reset_index(drop=True)
+
+    df_shuffled.to_csv(output_path, index=False)
+    print("Done!")
+    print(f"Matrix Dimension Verification: {df_shuffled.shape}")
+
+if __name__ == "__main__":
+    main()
