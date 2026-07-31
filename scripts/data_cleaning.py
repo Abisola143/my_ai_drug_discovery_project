@@ -163,7 +163,7 @@ for file_path in neg_files:
 df_neg = pd.DataFrame(all_neg_records)
 print(f"Consolidated {len(df_neg)} negative records")
 
-#during troubleshooting, i often recieved 0 total entries since one file path was empty but due to
+#during troubleshooting, i often received 0 total entries since one file path was empty but due to
 #my balancing script, this appeared as both being empty. This was to check for that issue
 if df_pos.empty or df_neg.empty:
     print("One or more records are empty")

@@ -47,7 +47,7 @@ def evaluate(name, model, X_test, y_test):
         "Recall": round(recall_score(y_test, y_pred), 3),
         "F1": round(f1_score(y_test, y_pred), 3),
         "ROC-AUC": round(roc_auc_score(y_test, y_pred), 3),
-        "MCC": matthews_corrcoef(y_test, y_pred),
+        "MCC": round(matthews_corrcoef(y_test, y_pred),3),
         "TN": tn, "FP": fp, "FN": fn, "TP": tp,
     }
 def main():
