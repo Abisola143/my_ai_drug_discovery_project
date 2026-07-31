@@ -29,9 +29,9 @@ Raw letter sequences are mathematically converted into floating-point tensors ac
 
 1. **Net Electrical Charge**: Evaluated using the net distribution formula: 
    $$\text{Net Charge} = (K + R + H) - (D + E)$$
-2. **Isoelectric Point**: Calculated using bisection optimisation algorithm to find the pH at which each sequence is neutral
+2. **Isoelectric Point**: Calculated using bisection optimization algorithm to find the pH at which each sequence is neutral
 3. **Mean Eisenberg**: Overall Hydrophobicity of the sequence
-4. **Hydrophobic Moment**: Using the formula for window moment and assuming 100 degrees for an alpha helix folding of the sequence
+4. **Hydrophobic Moment**: Using the formula for window moment and assuming 100 degrees for an alpha-helix folding of the sequence
 5. **Mean Bulkiness**: Overall size of each of the side chains, to calculate for steric hindrance
 ---
 
