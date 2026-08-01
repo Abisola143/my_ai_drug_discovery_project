@@ -1,5 +1,5 @@
-Unnamed: 0,Model,Precision,Recall,F1,ROC-AUC,MCC,TN,FP,FN,TP
-0.0,Dummy (majority),0.0,0.0,0.0,0.5,0.0,479,0,479,0
-1.0,Logistic Regression,0.631,0.697,0.663,0.645,0.292,284,195,145,334
-2.0,Random Forest,0.753,0.82,0.785,0.776,0.553,350,129,86,393
-,Macrel(published tool),0.995,0.854,0.919,0.925,0.858,477,2,70,409
+Model,Precision,Recall,F1,ROC-AUC,MCC,TN,FP,FN,TP
+Dummy (majority),0.0,0.0,0.0,0.5,0.0,479,0,479,0
+Logistic Regression,0.631,0.697,0.663,0.645,0.292,284,195,145,334
+Random Forest,0.753,0.82,0.785,0.776,0.553,350,129,86,393
+Macrel(published tool),0.995,0.854,0.919,0.925,0.858,477,2,70,409

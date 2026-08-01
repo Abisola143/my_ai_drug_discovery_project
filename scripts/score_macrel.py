@@ -40,7 +40,9 @@ for k,v in row.items():
     print(f"{k}: {v}")
 
 try:
-    results = pd.read_csv(RESULTS_PATH)
+    results = pd.read_csv(RESULTS_PATH, index_col= False)
+    if "Unnamed: 0" in results.columns:
+        results = results.drop(columns=["Unnamed: 0"])
     results = results[results["Model"] != row["Model"]]
     results = pd.concat([results, pd.DataFrame([row])], ignore_index=True)
 except FileNotFoundError:
